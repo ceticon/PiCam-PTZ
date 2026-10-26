@@ -1,0 +1,22 @@
+{
+    "pan": {
+        "channel": 0,
+        "min": 20,
+        "max": 160,
+        "center": 90
+    },
+    "tilt": {
+        "channel": 1,
+        "min": 20,
+        "max": 160,
+        "center": 90
+    },
+    "servo": {
+        "step_size": 1.0,
+        "step_delay": 0.03,
+        "min_pulse": 1000,
+        "max_pulse": 2000,
+        "auto_release": true,
+        "release_delay": 1.0
+    }
+}

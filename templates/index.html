@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PiCam-PTZ</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="{{ url_for('static', filename='script.js') }}"
+            defer></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =====================================
+         HEADER
+         ===================================== -->
+
+    <header>
+        <h1>📷 PiCam-PTZ</h1>
+        <p>Raspberry Pi 5 – Camera Module 3</p>
+    </header>
+
+    <main>
+
+        <!-- =====================================
+             LIVE CAMERA
+             ===================================== -->
+
+        <section class="card">
+
+            <h2>Live Camera</h2>
+
+            <div class="video-container">
+
+                <img
+                    id="camera-stream"
+                    src="{{ url_for('video_feed') }}"
+                    alt="PiCam-PTZ Live Video">
+
+            </div>
+
+
+            <!-- =================================
+                 PHOTO CONTROLS
+                 ================================= -->
+
+            <div class="photo-controls">
+
+                <!-- TAKE PHOTO -->
+
+                <button
+                    id="take-photo"
+                    class="photo-button"
+                    type="button">
+                    📸 Ta kort
+                </button>
+
+
+                <!-- PHOTO GALLERY -->
+
+                <a
+                    href="{{ url_for('gallery') }}"
+                    class="gallery-button">
+                    🖼️ Bildgalleri
+                </a>
+
+
+                <!-- PHOTO STATUS -->
+
+                <span
+                    id="photo-status"
+                    role="status"
+                    aria-live="polite">
+                </span>
+
+            </div>
+
+
+            <!-- =================================
+                 PHOTO PREVIEW
+                 ================================= -->
+
+            <div
+                id="photo-preview"
+                class="photo-preview"
+                hidden>
+
+                <h3>Senaste fotografiet</h3>
+
+                <a
+                    id="photo-link"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    <img
+                        id="photo-image"
+                        alt="Senaste fotografiet">
+
+                </a>
+
+                <p id="photo-filename"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             PTZ CONTROL
+             ===================================== -->
+
+        <section class="card">
+
+            <h2>PTZ Control</h2>
+
+            <div class="ptz-controls">
+
+                <!-- DIRECTION BUTTONS -->
+
+                <div class="direction-controls">
+
+                    <button
+                        id="tilt-up"
+                        class="direction up"
+                        type="button"
+                        aria-label="Tilt upp">
+                        ▲
+                    </button>
+
+                    <button
+                        id="pan-left"
+                        class="direction left"
+                        type="button"
+                        aria-label="Pan vänster">
+                        ◀
+                    </button>
+
+                    <button
+                        id="center"
+                        class="center-button"
+                        type="button">
+                        CENTER
+                    </button>
+
+                    <button
+                        id="pan-right"
+                        class="direction right"
+                        type="button"
+                        aria-label="Pan höger">
+                        ▶
+                    </button>
+
+                    <button
+                        id="tilt-down"
+                        class="direction down"
+                        type="button"
+                        aria-label="Tilt ned">
+                        ▼
+                    </button>
+
+                </div>
+
+
+                <!-- =================================
+                     PAN / TILT SLIDERS
+                     ================================= -->
+
+                <div class="slider-controls">
+
+                    <!-- PAN -->
+
+                    <div class="slider-group">
+
+                        <label for="pan-slider">
+                            Pan:
+                            <span id="pan-value">--</span>°
+                        </label>
+
+                        <input
+                            type="range"
+                            id="pan-slider"
+                            min="60"
+                            max="120"
+                            value="90">
+
+                    </div>
+
+
+                    <!-- TILT -->
+
+                    <div class="slider-group">
+
+                        <label for="tilt-slider">
+                            Tilt:
+                            <span id="tilt-value">--</span>°
+                        </label>
+
+                        <input
+                            type="range"
+                            id="tilt-slider"
+                            min="60"
+                            max="120"
+                            value="90">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SERVO STATUS
+             ===================================== -->
+
+        <section class="card">
+
+            <h2>Servo Status</h2>
+
+            <div class="status-grid">
+
+                <!-- PAN POSITION -->
+
+                <div class="status-item">
+
+                    <span>Pan position</span>
+
+                    <strong id="pan-position">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <!-- PAN TARGET -->
+
+                <div class="status-item">
+
+                    <span>Pan target</span>
+
+                    <strong id="pan-target">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <!-- TILT POSITION -->
+
+                <div class="status-item">
+
+                    <span>Tilt position</span>
+
+                    <strong id="tilt-position">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <!-- TILT TARGET -->
+
+                <div class="status-item">
+
+                    <span>Tilt target</span>
+
+                    <strong id="tilt-target">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+         ===================================== -->
+
+    <footer>
+        <p>PiCam-PTZ | Raspberry Pi 5</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
+```

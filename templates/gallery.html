@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bildgalleri - PiCam-PTZ</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="{{ url_for('static', filename='gallery.js') }}"
+            defer></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <h1>🖼️ Bildgalleri</h1>
+        <p>PiCam-PTZ | Raspberry Pi 5</p>
+    </header>
+
+    <main>
+
+        <section class="card">
+
+            <!-- GALLERY HEADER -->
+            <div class="gallery-header">
+
+                <h2>
+                    Fotografier
+                    (<span id="photo-count">{{ photos|length }}</span>)
+                </h2>
+
+                <!-- BACK BUTTON -->
+                <a href="{{ url_for('index') }}"
+                   class="gallery-back">
+                    ⬅ Tillbaka till kameran
+                </a>
+
+            </div>
+
+            <!-- EMPTY GALLERY -->
+            <div id="gallery-empty"
+                 class="gallery-empty"
+                 {% if photos %}hidden{% endif %}>
+
+                <p>📷 Inga fotografier finns ännu.</p>
+                <p>Gå tillbaka till kameran och ta ditt första kort!</p>
+
+            </div>
+
+            <!-- PHOTO GRID -->
+            <div id="gallery-grid" class="gallery-grid">
+
+                {% for photo in photos %}
+
+                <div class="gallery-item"
+                     data-filename="{{ photo.filename }}">
+
+                    <!-- PHOTO -->
+                    <a href="{{ photo.url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="Visa bilden i full upplösning">
+
+                        <img src="{{ photo.url }}"
+                             alt="{{ photo.filename }}"
+                             loading="lazy">
+
+                    </a>
+
+                    <!-- PHOTO INFORMATION -->
+                    <div class="gallery-info">
+
+                        <div class="gallery-filename">
+                            {{ photo.filename }}
+                        </div>
+
+                        <div class="gallery-size">
+                            {{ photo.size_mb }} MB
+                        </div>
+
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="gallery-actions">
+
+                        <!-- DOWNLOAD -->
+                        <a class="gallery-download"
+                           href="{{ url_for('download_photo', filename=photo.filename) }}">
+                            ⬇ Ladda ner
+                        </a>
+
+                        <!-- DELETE -->
+                        <button type="button"
+                                class="gallery-delete"
+                                data-filename="{{ photo.filename }}">
+                            🗑️ Radera
+                        </button>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>PiCam-PTZ | Raspberry Pi 5</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

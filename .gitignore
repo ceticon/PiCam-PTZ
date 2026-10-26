@@ -1,0 +1,40 @@
+# ==========================================
+# PiCam-PTZ - Git Ignore
+# ==========================================
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+myenv/
+.venv/
+venv/
+
+# Backup files
+*.bak
+*_backup.py
+*_backup.css
+*_backup.html
+
+# Photos and videos
+photos/
+videos/
+thumbnails/
+
+# Environment and secrets
+.env
+.env.*
+
+# Editor files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
