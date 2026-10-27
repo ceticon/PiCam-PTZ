@@ -453,3 +453,57 @@ async function initialize() {
 }
 
 initialize();
+
+// VIDEO RECORDING
+const recButton = document.getElementById("record-button");
+const recTimer = document.getElementById("record-timer");
+const recIndicator = document.getElementById("record-indicator");
+const recStatus = document.getElementById("record-status");
+const recDuration = document.getElementById("record-duration");
+let recordBusy = false;
+let lastRecording = false;
+
+function formatRecordingTime(seconds) {
+    const total = Math.max(0, Math.floor(Number(seconds) || 0));
+    return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+}
+
+async function updateRecordingStatus() {
+    try {
+        const response = await fetch("/api/video/status", {cache: "no-store"});
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const status = await response.json();
+        lastRecording = Boolean(status.recording);
+        recIndicator.hidden = !lastRecording;
+        recTimer.textContent = formatRecordingTime(status.elapsed_seconds);
+        recButton.textContent = lastRecording ? "⏹ Stoppa REC" : "🔴 REC";
+        recButton.classList.toggle("is-recording", lastRecording);
+        recDuration.disabled = lastRecording || recordBusy;
+        if (!recordBusy) recButton.disabled = false;
+        if (status.error) recStatus.textContent = "❌ " + status.error;
+    } catch (error) {
+        recStatus.textContent = "❌ Kan inte läsa inspelningsstatus: " + error.message;
+    }
+}
+
+recButton.addEventListener("click", async () => {
+    if (recordBusy) return;
+    recordBusy = true;
+    recButton.disabled = true;
+    recDuration.disabled = true;
+    recStatus.textContent = lastRecording ? "⏳ Stoppar och sparar MP4..." : "⏳ Startar inspelning...";
+    try {
+        const url = lastRecording ? "/api/video/stop" : "/api/video/start";
+        const payload = lastRecording ? {} : {duration: Number(recDuration.value)};
+        const result = await postJSON(url, payload);
+        if (!result.success) throw new Error(result.error || "Inspelningen misslyckades");
+        recStatus.textContent = lastRecording ? "✅ MP4 sparad: " + result.filename : "🔴 Spelar in...";
+    } catch (error) {
+        recStatus.textContent = "❌ " + error.message;
+    } finally {
+        recordBusy = false;
+        await updateRecordingStatus();
+    }
+});
+updateRecordingStatus();
+setInterval(updateRecordingStatus, 1000);

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="sv"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Videogalleri – PiCam-PTZ</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='videos.js') }}" defer></script></head>
+<body><div class="container">
+<header><h1>🎬 Videogalleri</h1><p>PiCam-PTZ | Raspberry Pi 5</p></header>
+<main><section class="card">
+<div class="gallery-header"><h2>Videor (<span id="video-count">{{ videos|length }}</span>)</h2>
+<a href="{{ url_for('index') }}" class="gallery-back">⬅ Tillbaka till kameran</a></div>
+<div id="video-empty" class="gallery-empty" {% if videos %}hidden{% endif %}>Inga videor sparade ännu.</div>
+<div id="video-grid" class="gallery-grid">
+{% for video in videos %}
+<div class="gallery-item video-gallery-item" data-filename="{{ video.filename }}">
+<video controls preload="metadata" src="{{ video.url }}"></video>
+<div class="gallery-info"><div class="gallery-filename">{{ video.filename }}</div>
+<div class="gallery-size">{{ video.size_mb }} MB</div></div>
+<div class="gallery-actions">
+<a class="gallery-download" href="{{ url_for('download_video', filename=video.filename) }}">⬇ Ladda ner</a>
+<button class="gallery-delete" type="button" data-filename="{{ video.filename }}">🗑️ Radera</button>
+</div></div>
+{% endfor %}
+</div></section></main>
+<footer><p>PiCam-PTZ | Raspberry Pi 5</p></footer></div></body></html>
